@@ -1,3 +1,4 @@
+use clap::Parser;
 use windows::core::GUID;
 use windows::Win32::UI::Shell::SHGetKnownFolderPath;
 use windows::Win32::UI::Shell::{
@@ -22,7 +23,12 @@ use windows::Win32::UI::Shell::{
     FOLDERID_Programs,
     FOLDERID_Windows,
 };
-use windows::Win32::UI::Shell::KF_FLAG_CREATE;
+use windows::Win32::UI::Shell::{
+    KNOWN_FOLDER_FLAG,
+    KF_FLAG_CREATE,
+    KF_FLAG_DONT_UNEXPAND,
+    KF_FLAG_NO_ALIAS,
+};
 use windows::Win32::System::Com::CoTaskMemFree;
 
 unsafe fn string_from_wchar_pointer(ptr: *const u16) -> String {
@@ -37,10 +43,20 @@ unsafe fn string_from_wchar_pointer(ptr: *const u16) -> String {
     String::from_utf16_lossy(slice)
 }
 
-fn get_registry_folder_string(id: GUID) -> anyhow::Result<String> {
+#[derive(Clone, Debug, Parser)]
+#[command(author, version, about, long_about=None)]
+struct Args {
+    // Create folder
+    #[arg(long, default_value_t = false)]
+    create_folder: bool,
+    // Enable aliasing to prevent substituting of environment variables like %USERPROFILE%
+    #[arg(long, default_value_t = false)]
+    enable_aliasing: bool,
+}
+
+fn get_registry_folder_string(folder_id: GUID, known_folder_flags: KNOWN_FOLDER_FLAG) -> anyhow::Result<String> {
     unsafe {
-        let known_folder_flags = KF_FLAG_CREATE;
-        let result = SHGetKnownFolderPath(&id, known_folder_flags, None);
+        let result = SHGetKnownFolderPath(&folder_id, known_folder_flags, None);
         let path: anyhow::Result<String> = result.clone()
             .map(|address| string_from_wchar_pointer(address.0))
             .map_err(|err| err.clone().into());
@@ -61,6 +77,8 @@ fn main() -> anyhow::Result<()> {
         .with_colors(true)
         .without_timestamps()
         .init()?;
+
+    let args = Args::parse();
 
     let folders = vec![
         ("Profile", FOLDERID_Profile),
@@ -84,8 +102,16 @@ fn main() -> anyhow::Result<()> {
         ("Programs", FOLDERID_Programs),
         ("Windows", FOLDERID_Windows),
     ];
+
+    let mut known_folder_flags = KNOWN_FOLDER_FLAG(0);
+    if args.create_folder {
+        known_folder_flags |= KF_FLAG_CREATE;
+    }
+    if !args.enable_aliasing {
+        known_folder_flags |= KF_FLAG_NO_ALIAS | KF_FLAG_DONT_UNEXPAND;
+    }
     for (name, id) in folders {
-        match get_registry_folder_string(id) {
+        match get_registry_folder_string(id, known_folder_flags) {
             Ok(string) => println!("{name} = {string}"),
             Err(err) => log::error!("Failed to read registry entry for {name}: {err}"),
         }

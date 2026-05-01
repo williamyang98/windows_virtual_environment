@@ -15,13 +15,13 @@ struct Args {
     #[arg(long, value_parser = validate_is_directory)]
     executable_working_directory: Option<PathBuf>,
     // Environment path
-    #[arg(long, value_parser = validate_is_directory_empty_or_exists)]
+    #[arg(long, default_value = "./env", value_parser = validate_is_directory_empty_or_exists)]
     environment_path: PathBuf,
     // Environment config
-    #[arg(long, value_parser = validate_is_file)]
+    #[arg(long, default_value = "./environment_config.json", value_parser = validate_is_file)]
     environment_config: PathBuf,
     // Username
-    #[arg(long)]
+    #[arg(long, default_value = "default")]
     username: String,
     // Executable arguments
     executable_arguments: Vec<String>,

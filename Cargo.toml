@@ -14,6 +14,14 @@ simple_logger = { version = "4.3.3", features = ["colors", "threads", "stderr"] 
 strfmt = { version = "0.2.5" }
 thiserror = { version = "1.0.58" }
 
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.62.2"
+features = [
+    "Win32_Foundation",
+    "Win32_System_Com",
+    "Win32_UI_Shell",
+]
+
 [profile.release-with-debug]
 inherits = "release"
 debug = true
@@ -25,3 +33,7 @@ path = "src/start_environment.rs"
 [[bin]]
 name = "print_environment"
 path = "src/print_environment.rs"
+
+[[bin]]
+name = "print_registry"
+path = "src/print_registry.rs"

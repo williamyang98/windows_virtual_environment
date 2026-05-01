@@ -1,0 +1,27 @@
+[package]
+name = "windows_virtual_environment"
+version = "0.1.0"
+edition = "2021"
+default-run = "start_environment"
+
+[dependencies]
+anyhow = { version = "1.0.80" }
+clap = { version = "4.5.1", features = ["derive"] }
+log = { version = "0.4.20" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+simple_logger = { version = "4.3.3", features = ["colors", "threads", "stderr"] }
+strfmt = { version = "0.2.5" }
+thiserror = { version = "1.0.58" }
+
+[profile.release-with-debug]
+inherits = "release"
+debug = true
+
+[[bin]]
+name = "start_environment"
+path = "src/start_environment.rs"
+
+[[bin]]
+name = "print_environment"
+path = "src/print_environment.rs"

@@ -1,4 +1,6 @@
 ## Windows Virtual Environment
+[![x86-windows](https://github.com/williamyang98/windows_virtual_environment/actions/workflows/x86-windows.yml/badge.svg)](https://github.com/williamyang98/windows_virtual_environment/actions/workflows/x86-windows.yml)
+
 A command line program to run programs especially on Windows with the environment variables pointing to a specific local folder
 
 Useful for running old games that save to various random folders on Windows to instead save its files into a specific folder that you can copy, move and paste around for a fully portable collection of save files

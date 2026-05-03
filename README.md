@@ -13,6 +13,8 @@ There are also utility programs to help show you what your programs would be see
 - Show environment variables: ```print_environment.exe```
 - Show registry values: ```print_registry.exe```
 
+To figure out what files a program created inside your virtual environment run: ```find <ENVIRONMENT_PATH> -type f```
+
 ## Handling games that save to directories based on the windows registry
 Unfortunately some games read the Windows registry to get the paths for their folder locations which we cannot modify through enironment variables.
 

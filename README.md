@@ -5,9 +5,27 @@ A command line program to run programs especially on Windows with the environmen
 
 Useful for running old games that save to various random folders on Windows to instead save its files into a specific folder that you can copy, move and paste around for a fully portable collection of save files
 
-Usage: ```start_environment.exe --executable-path <EXECUTABLE_PATH> --environment-path <ENVIRONMENT_PATH> --username <USERNAME>```
+```
+Usage: start_environment.exe [OPTIONS] <EXECUTABLE_PATH> [EXECUTABLE_ARGUMENTS]...
 
-For more help run: ```start_environment.exe --help```
+Arguments:
+  <EXECUTABLE_PATH>
+  [EXECUTABLE_ARGUMENTS]...
+
+Options:
+  -d, --executable-working-directory <EXECUTABLE_WORKING_DIRECTORY>
+          Default is directory containing executable
+  -p, --environment-path <ENVIRONMENT_PATH>
+          [default: ./env]
+  -c, --environment-config <ENVIRONMENT_CONFIG>
+          [default: ./environment_config.json]
+  -u, --username <USERNAME>
+          [default: default]
+  -h, --help
+          Print help
+  -V, --version
+          Print version
+```
 
 There are also utility programs to help show you what your programs would be seeing
 - Show environment variables: ```print_environment.exe```
@@ -38,7 +56,7 @@ The following windows command will create a symbolic link into a virtual environ
 This is not a definitive list and you may have to do your own research. 
 
 ### Fix 2: Registry editing
-The function <code>SHGetKnownFolderPath</code> reads from the registry path <code>HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders</code>. 
+The function <code>SHGetKnownFolderPath</code> reads from the registry path <code>HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders</code>.
 
 We can modify the values in there so they are based on environment variables instead of being hard coded to the current user directory.
 
@@ -46,9 +64,9 @@ We can modify the values in there so they are based on environment variables ins
 
 ![Fixing registry](docs/fixing_registry_variables.png)
 
-In this screenshot we can replace <code>C:\Users\acidi</code> with <code>%USERPROFILE%</code> in the problematic folder paths. You can validate if the changes worked by running <code>print_environment.exe</code> inside the virtual environment.
+In this screenshot we can replace <code>C:\Users\acidi</code> with <code>%USERPROFILE%</code> in the problematic folder paths. You can validate if the changes worked by running <code>print_registry.exe</code> inside the virtual environment.
 
-If a folder is missing from the registry, you can manually add an entry. Refer to this [link](https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid) for the list of possible registry entries that can be added. (*some of these don't work*)
+If a folder is missing from the registry, you can manually add an entry. Refer to this [link](https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid#constants) for the list of possible registry entries that can be added. (*some of these don't work*)
 
 For example, the <code>Saved Games</code> folder can be specified with the following registry key for <code>FOLDERID_SavedGames</code>.
 | Field | Value |

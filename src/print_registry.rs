@@ -80,6 +80,7 @@ fn main() -> anyhow::Result<()> {
 
     let args = Args::parse();
 
+    // https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid#constants
     let folders = vec![
         ("Profile", FOLDERID_Profile),
         ("Favorites", FOLDERID_Favorites),

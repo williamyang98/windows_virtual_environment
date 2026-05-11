@@ -36,13 +36,20 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Lint
+    - name: Strict Lint
       shell: bash
-      run: cargo clippy --profile ${{env.BUILD_TYPE}}
+      run: cargo clippy --profile ${{env.BUILD_TYPE}} -- -D warnings
 
     - name: Build
       shell: bash
       run: cargo build --profile ${{env.BUILD_TYPE}}
+
+    - name: Run
+      shell: bash
+      run: |
+        export DIR=./target/${{env.BUILD_TYPE}}/
+        $DIR/start_environment.exe $DIR/print_environment.exe
+        $DIR/start_environment.exe $DIR/print_registry.exe
 
     - name: Copy files
       shell: bash

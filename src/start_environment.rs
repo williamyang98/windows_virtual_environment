@@ -6,23 +6,27 @@ use std::path::{Path, PathBuf};
 use strfmt::strfmt;
 
 #[derive(Clone, Debug, Parser)]
-#[command(author, version, about, long_about=None)]
+#[command(
+    version, author,
+    about = "Start executable with custom environment variables to create a portable virtual environment",
+    long_about = None,
+)]
 struct Args {
-    // Executable path
-    #[arg(long, value_parser = validate_is_file)]
-    executable_path: PathBuf,
     // Executable working directory
-    #[arg(long, value_parser = validate_is_directory)]
+    #[arg(short = 'd', long, value_parser = validate_is_directory, help = "Default is directory containing executable")]
     executable_working_directory: Option<PathBuf>,
     // Environment path
-    #[arg(long, default_value = "./env", value_parser = validate_is_directory_empty_or_exists)]
+    #[arg(short = 'p', long, default_value = "./env", value_parser = validate_is_directory_empty_or_exists)]
     environment_path: PathBuf,
     // Environment config
-    #[arg(long, default_value = "./environment_config.json", value_parser = validate_is_file)]
+    #[arg(short = 'c', long, default_value = "./environment_config.json", value_parser = validate_is_file)]
     environment_config: PathBuf,
     // Username
-    #[arg(long, default_value = "default")]
+    #[arg(short = 'u', long, default_value = "default")]
     username: String,
+    // Executable path
+    #[arg(value_parser = validate_is_file)]
+    executable_path: PathBuf,
     // Executable arguments
     executable_arguments: Vec<String>,
 }

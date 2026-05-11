@@ -23,10 +23,21 @@
         "ONEDRIVE": "{root}/Users/{username}/OneDrive"
     },
     "seed_directories": [
-        "{root}/Users/{username}/Documents/My Games/",
+        "{root}/ProgramData/Microsoft/Windows/Start Menu/Programs/Startup/",
+        "{root}/Users/Public/Desktop/",
+        "{root}/Users/Public/Documents/",
+        "{root}/Users/Public/Downloads/",
+        "{root}/Users/Public/Music/",
+        "{root}/Users/Public/Pictures/",
+        "{root}/Users/Public/Videos/",
+        "{root}/Users/{username}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/",
         "{root}/Users/{username}/Desktop/",
+        "{root}/Users/{username}/Documents/My Games/",
         "{root}/Users/{username}/Downloads/",
-        "{root}/Users/{username}/Pictures/"
+        "{root}/Users/{username}/Favorites/",
+        "{root}/Users/{username}/Music/",
+        "{root}/Users/{username}/Pictures/",
+        "{root}/Users/{username}/Videos/"
     ],
     "override_variables" : {
         "USERNAME": "{username}"
